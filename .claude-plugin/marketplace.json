@@ -1,0 +1,6 @@
+{
+  "name": "memory-lens",
+  "owner": { "name": "sousair" },
+  "metadata": { "description": "Read-only view of ai-memory activity in Claude Code" },
+  "plugins": [{ "name": "memory-lens", "source": "./" }]
+}

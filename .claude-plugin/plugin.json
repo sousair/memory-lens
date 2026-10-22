@@ -1,0 +1,49 @@
+{
+  "name": "memory-lens",
+  "version": "0.4.2",
+  "description": "Read-only view of what ai-memory injects and reads during a session",
+  "types": "./types/index.d.ts",
+  "author": {
+    "name": "sousair"
+  },
+  "keywords": [
+    "memory",
+    "mod",
+    "pane"
+  ],
+  "userConfig": {
+    "mode": {
+      "type": "string",
+      "title": "Mode",
+      "description": "on: open the pane at session start and keep it open. off: never open it by itself; /memory-lens and /mem still toggle it. auto: open on a pending handoff, a last-session line or a memory write or handoff, and close after about 25 s idle (only where the pane can dock).",
+      "default": "auto",
+      "options": [
+        "on",
+        "off",
+        "auto"
+      ]
+    },
+    "toastSeconds": {
+      "type": "number",
+      "title": "Toast seconds",
+      "description": "How long a memory toast stays visible.",
+      "default": 6
+    },
+    "toastCap": {
+      "type": "number",
+      "title": "Toast cap",
+      "description": "Maximum memory toasts per prompt.",
+      "default": 12
+    },
+    "summaries": {
+      "type": "string",
+      "title": "Summaries",
+      "description": "on: ask the model for a short name/summary when a page has none. off: show stored text only.",
+      "default": "on",
+      "options": [
+        "on",
+        "off"
+      ]
+    }
+  }
+}
