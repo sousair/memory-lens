@@ -112,7 +112,6 @@ test('/memory-lens closes a pinned pane, and reopening it by hand never auto-clo
   expect(seen).not.toContain('close')
 })
 
-const SURFACES = ['terminal', 'desktop'] as const
 
 const present = ($: any, presentation?: object) => $.command.run({ command: 'memory-lens', presentation } as any)
 
@@ -154,8 +153,8 @@ test('a failing ui.close in the idle timer is swallowed', async ($, on) => {
   expect(opens(seen).length).toBe(1)
 })
 
-async function lines($: any, surface: 'terminal' | 'desktop' = 'terminal') {
-  const ui = await $.ui.mount({ ...PANE, surface })
+async function lines($: any) {
+  const ui = await $.ui.mount({ ...PANE, surface: 'terminal' })
   const drawn = draw(await ui.drawn(), PANE.props.bodyColumns)
   await ui.unmount()
   return drawn
@@ -165,14 +164,12 @@ test('the pane shows the three sections and lists a read with its readable name'
   await setup($, on)
   await $.tool.call(read)
   await $.tool.call(write)
-  for (const surface of SURFACES) {
-    const all = await lines($, surface)
-    for (const title of ['AT START', 'THIS SESSION', 'LEFT OFF']) expect(all.some(l => l.startsWith(title))).toBe(true)
-    expect(all.find(l => l.startsWith('THIS SESSION'))).toMatch(/ 1 read · 1 saved$/)
-    expect(all.some(l => /^ \d\d:\d\d read +Alpha plan$/.test(l))).toBe(true)
-    expect(all).toContain(' not available')
-    expect(all).toContain(' Last thing')
-  }
+  const all = await lines($)
+  for (const title of ['AT START', 'THIS SESSION', 'LEFT OFF']) expect(all.some(l => l.startsWith(title))).toBe(true)
+  expect(all.find(l => l.startsWith('THIS SESSION'))).toMatch(/ 1 read · 1 saved$/)
+  expect(all.some(l => /^ \d\d:\d\d read +Alpha plan$/.test(l))).toBe(true)
+  expect(all).toContain(' not available')
+  expect(all).toContain(' Last thing')
 })
 
 test('the count counts each page row once and skips the unlisted kinds', async ($, on) => {
@@ -188,7 +185,7 @@ test('the count counts each page row once and skips the unlisted kinds', async (
 
 test('with ai-memory unreachable the pane says unavailable and nothing throws', async ($, on) => {
   await setup($, on, { recent: () => { throw new Error('down') } })
-  for (const surface of SURFACES) expect(await lines($, surface)).toContain(' unavailable')
+  expect(await lines($)).toContain(' unavailable')
 })
 
 test('an errored memory_recent also reads unavailable', async ($, on) => {

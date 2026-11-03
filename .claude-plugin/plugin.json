@@ -1,6 +1,6 @@
 {
   "name": "memory-lens",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Read-only view of what ai-memory injects and reads during a session",
   "types": "./types/index.d.ts",
   "author": {
